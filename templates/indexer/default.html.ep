@@ -1,0 +1,41 @@
+% layout 'default', v => {};
+% title 'FS';
+<h1>Indexer</h1>
+
+<form action="<%= url_for('indexer_add_url') %>">
+    Add url:
+    <br>
+    <input type="text" name="url" value="" style="width: 300px">
+    <input type="Submit" value="Add">
+</form>
+
+<br>
+<br>
+
+<h2>Unporcessed dirs</h2>
+
+<a href="<%= url_for('indexer_do_more') %>">Continue</a>
+&nbsp;
+<a href="<%= url_for('indexer') %>">Refresh</a>
+<br>
+<br>
+
+<%= time %> - <%= time  - 3600 * 24 * 7 %>
+
+<br>
+<br>
+
+% for my $path (@$unprocessed_paths) {
+    <tt><%= $path->id %></tt>
+    <a target="remote" href="<%= $path->to_url->to_string %>"><%= $path->to_url_unescaped %></a>    
+    TC: <%= $path->time_created %>
+    -
+    TU: <%= $path->time_updated %>
+    -
+    TB: <%= $path->time_broken %>
+    -
+    <a href="<%= url_for('indexer_delete_url')->query(id => $path->id) %>">Delete</a>
+    <br>    
+% }
+
+

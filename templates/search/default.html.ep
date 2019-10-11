@@ -1,0 +1,40 @@
+% my $v = {};
+% layout 'default', v => $v;
+% title 'FS';
+
+
+<div class="resultset">
+    <div class="summary">
+        Found: <%= $resultset->total %>
+    </div>
+
+    % $resultset->results->each(sub {
+        % my $result = $_;
+        <div class="result">
+            <div class="type">
+                <i class="f-type-<%= $result->type %>" title="<%= $result->type %>"></i>
+            </div>
+            <div class="title">
+                <a target="remote" href="<%= $result->path->to_url_escaped %>"><%= $result->title %></a>
+                % if ($result->path->extension) {
+                    <sup>[<%= uc $result->path->extension %>]<sup>
+                % }
+            </div>
+            <div class="url">
+                 % my $lcount = 0;
+                % for my $link ($result->links) {
+                    % if ($lcount) {
+                        ›
+                        %#/
+                    % }
+                    <a target="remote" href="<%= $link->{url} %>"><%= $link->{title} %></a>
+                    % $lcount++;
+                % }
+            </div>
+            <div class="date" title="<%= $result->path->id %>">
+                %= $result->time_created;
+            </div>
+        </div>
+    % });
+
+</div>
